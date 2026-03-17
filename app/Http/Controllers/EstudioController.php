@@ -6,15 +6,32 @@ use Illuminate\Http\Request;
 
 class EstudioController extends Controller
 {
+    private function requireLogin()
+    {
+        if (!session()->has('user')) {
+            return redirect()->route('login')->with('error', 'Por favor inicia sesión para continuar.');
+        }
+
+        return null;
+    }
+
     // Formulario para crear un estudio
     public function create($funcionarioId)
     {
+        if ($redirect = $this->requireLogin()) {
+            return $redirect;
+        }
+
         return view('funcionarios.registroEstudio', ['funcionarioId' => $funcionarioId]);
     }
 
     // Registro estudio
     public function store(Request $request, $funcionarioId)
     {
+        if ($redirect = $this->requireLogin()) {
+            return $redirect;
+        }
+
         $validated = $request->validate([
             'nivel' => 'required|string',
             'titulo' => 'required|string',

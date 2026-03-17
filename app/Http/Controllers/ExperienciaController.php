@@ -7,13 +7,30 @@ use Illuminate\Http\Request;
 
 class ExperienciaController extends Controller
 {
+    private function requireLogin()
+    {
+        if (!session()->has('user')) {
+            return redirect()->route('login')->with('error', 'Por favor inicia sesión para continuar.');
+        }
+
+        return null;
+    }
+
     public function create($funcionarioId)
     {
+        if ($redirect = $this->requireLogin()) {
+            return $redirect;
+        }
+
         return view('funcionarios.registroExperiencia', ['funcionarioId' => $funcionarioId]);
     }
 
     public function store(Request $request, $funcionarioId)
     {
+        if ($redirect = $this->requireLogin()) {
+            return $redirect;
+        }
+
         $validated = $request->validate([
             'empresa' => 'required|string',
             'cargo' => 'required|string',

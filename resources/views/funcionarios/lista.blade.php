@@ -70,7 +70,15 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('funcionarios.show', $funcionario->id) }}" class="btn btn-info btn-sm">Ver hoja de vida</a>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ route('funcionarios.show', $funcionario->id) }}" class="btn btn-info btn-sm">Ver hoja de vida</a>
+                        <a href="{{ route('funcionarios.edit', $funcionario->id) }}" class="btn btn-primary btn-sm">Editar</a>
+                        <form action="{{ route('funcionarios.destroy', $funcionario->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este funcionario?');" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @endforeach

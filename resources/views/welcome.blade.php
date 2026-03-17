@@ -31,9 +31,21 @@
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">Inicio</h5>
-                    <p class="card-text flex-grow-1">Regresa a esta pantalla principal en cualquier momento.</p>
-                    <a href="{{ url('/') }}" class="btn btn-outline-primary mt-3">Ir al inicio</a>
+                    <h5 class="card-title">Buscar funcionario</h5>
+                    <p class="card-text">Busca por documento, nombre o apellido.</p>
+                    <form method="GET" action="{{ route('funcionarios.index') }}" class="mt-2">
+                        <div class="mb-2">
+                            <input
+                                type="search"
+                                name="q"
+                                class="form-control"
+                                placeholder="Ej: 123456 o Juan Pérez"
+                                aria-label="Buscar funcionario"
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    </form>
                 </div>
             </div>
         </div>
