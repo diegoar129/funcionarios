@@ -8,9 +8,20 @@ use Illuminate\Http\Request;
 class FuncionarioController extends Controller
 {
     // Lista funcionarios en una vista
-    public function index()
+    public function index(Request $request)
     {
-        $funcionarios = Funcionario::with(['estudios', 'experiencias'])->paginate(10);
+        $query = Funcionario::with(['estudios', 'experiencias']);
+
+        if ($search = $request->query('q')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('documento', 'like', "%{$search}%")
+                    ->orWhere('nombres', 'like', "%{$search}%")
+                    ->orWhere('apellidos', 'like', "%{$search}%");
+            });
+        }
+
+        $funcionarios = $query->paginate(10)->withQueryString();
+
         return view('funcionarios.lista', compact('funcionarios'));
     }
 

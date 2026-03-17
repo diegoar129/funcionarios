@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('plantilla')
 
-    bienvenido a la pagina de inicio
-
-</body>
-</html>
+@section('content')
+    <div class="p-4 bg-light rounded shadow-sm">
+        <h2>Bienvenido a la página de inicio</h2>
+        <p class="mb-0">Usa el menú o los botones para navegar por el sistema.</p>
+    </div>
+@endsection

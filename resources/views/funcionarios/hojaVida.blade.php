@@ -16,9 +16,22 @@
 <p><strong>Dependencia:</strong> {{ $funcionario->dependencia }}</p>
 
 <h3>Formación Académica</h3>
-@if($funcionario->estudios->isEmpty())
+@php
+    $ultimoEstudio = $funcionario->estudios->sortByDesc('fecha_graduacion')->first();
+@endphp
+
+@if(!$ultimoEstudio)
     <p>No hay estudios registrados aún.</p>
 @else
+    <div class="mb-3">
+        <strong>Último estudio:</strong> {{ $ultimoEstudio->nivel }} - {{ $ultimoEstudio->titulo }}<br>
+        <small class="text-muted">{{ $ultimoEstudio->institucion }} - {{ $ultimoEstudio->fecha_graduacion }}</small><br>
+        <small class="text-muted">
+            Graduado hace {{ \Carbon\Carbon::parse($ultimoEstudio->fecha_graduacion)->diffInYears(now()) }} {{ \Carbon\Carbon::parse($ultimoEstudio->fecha_graduacion)->diffInYears(now()) === 1 ? 'año' : 'años' }}
+        </small>
+    </div>
+
+    <h4 class="mt-4">Todos los estudios</h4>
     <ul>
         @foreach($funcionario->estudios as $estudio)
             <li>{{ $estudio->nivel }} - {{ $estudio->titulo }} ({{ $estudio->institucion }}, {{ $estudio->fecha_graduacion }})</li>
