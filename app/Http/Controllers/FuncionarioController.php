@@ -1,18 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Funcionario;
 use Illuminate\Http\Request;
 
 class FuncionarioController extends Controller
 {
-    // llama  funcionarios
+    // Lista funcionarios en una vista
     public function index()
     {
-        return Funcionario::with(['estudios', 'experiencias'])->paginate(10);
+        $funcionarios = Funcionario::with(['estudios', 'experiencias'])->paginate(10);
+        return view('funcionarios.lista', compact('funcionarios'));
     }
 
-    // crea funcionario
+    // Formulario de creación
+    public function create()
+    {
+        return view('funcionarios.registro');
+    }
+
+    // Guarda un funcionario y redirige a la lista
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -26,16 +34,20 @@ class FuncionarioController extends Controller
             'dependencia' => 'required|string',
         ]);
 
-        return Funcionario::create($validated);
+        Funcionario::create($validated);
+
+        return redirect()->route('funcionarios.index')
+            ->with('success', 'Funcionario creado correctamente.');
     }
 
-    // llamado a un funcionario
+    // Muestra la hoja de vida de un funcionario
     public function show($id)
     {
-        return Funcionario::with(['estudios', 'experiencias'])->findOrFail($id);
+        $funcionario = Funcionario::with(['estudios', 'experiencias'])->findOrFail($id);
+        return view('funcionarios.hojaVida', compact('funcionario'));
     }
 
-    // Actualizacion de funcionario
+    // Actualiza un funcionario
     public function update(Request $request, $id)
     {
         $funcionario = Funcionario::findOrFail($id);
@@ -53,6 +65,7 @@ class FuncionarioController extends Controller
 
         $funcionario->update($validated);
 
-        return $funcionario;
+        return redirect()->route('funcionarios.show', $funcionario->id)
+            ->with('success', 'Funcionario actualizado correctamente.');
     }
 }

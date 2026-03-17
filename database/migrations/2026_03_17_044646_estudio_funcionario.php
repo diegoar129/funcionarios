@@ -6,27 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-     //
-
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('jobs', function (Blueprint $table) {
+         Schema::create('estudios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('funcionario_id')->constrained();
+            $table->unsignedBigInteger('funcionario_id');
             $table->string('nivel');
             $table->string('titulo');
             $table->string('institucion');
             $table->date('fecha_graduacion');
             $table->timestamps();
         });
-    }
 
+    }
 
     public function down(): void
     {
-        Schema::dropIfExists('jobs');
-        Schema::dropIfExists('job_batches');
-        Schema::dropIfExists('failed_jobs');
+     Schema::dropIfExists('estudio');
     }
 };
